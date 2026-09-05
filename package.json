@@ -1,0 +1,35 @@
+{
+  "name": "job-portal",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "db:setup": "tsx scripts/db-setup.ts",
+    "build:web": "npm run build --workspace=apps/web",
+    "build:api": "npm run build --workspace=apps/api",
+    "lint": "npm run lint --workspaces",
+    "typecheck": "npm run typecheck --workspaces"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.0",
+    "concurrently": "^9.0.0",
+    "prisma": "^4.16.2",
+    "tsx": "^4.23.13"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.16.2",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.4.7",
+    "pg": "^8.16.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

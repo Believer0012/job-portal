@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String         @id @default(uuid()) @db.Uuid
+  email          String         @unique
+  passwordHash   String
+  name           String
+  role           Role           @default(USER)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  jobs           Job[]          @relation("JobAuthor")
+  applications   Application[]
+  refreshTokens  RefreshToken[]
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jobs      Job[]
+}
+
+model ExperienceLevel {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jobs      Job[]
+}
+
+model Job {
+  id               String         @id @default(uuid()) @db.Uuid
+  slug             String         @unique
+  title            String
+  description      String
+  requirements     String         @default("")
+  benefits         String         @default("")
+  companyName      String
+  location         String
+  salaryMin        Int?
+  salaryMax        Int?
+  employmentType   EmploymentType
+  status           JobStatus      @default(DRAFT)
+  publishedAt      DateTime?
+  closedAt         DateTime?
+  categoryId       String         @db.Uuid
+  experienceLevelId String        @db.Uuid
+  authorId         String         @db.Uuid
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  category         Category       @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  experienceLevel  ExperienceLevel @relation(fields: [experienceLevelId], references: [id], onDelete: Restrict)
+  author           User           @relation("JobAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  applications     Application[]
+
+  @@index([status])
+  @@index([categoryId])
+  @@index([experienceLevelId])
+  @@index([employmentType])
+  @@index([createdAt])
+  @@index([authorId])
+}
+
+model Application {
+  id          String            @id @default(uuid()) @db.Uuid
+  userId      String            @db.Uuid
+  jobId       String            @db.Uuid
+  status      ApplicationStatus @default(APPLIED)
+  coverLetter String?
+  resumeUrl   String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@index([jobId])
+  @@index([status])
+  @@index([jobId, status])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([revokedAt])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  FREELANCE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  REVIEWING
+  SHORTLISTED
+  INTERVIEW
+  REJECTED
+  HIRED
+}
