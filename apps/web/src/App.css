@@ -1555,6 +1555,11 @@ select.jobs-status:disabled {
   border-color: #b45246;
 }
 
+.job-form-label-text {
+  display: inline-flex;
+  align-items: baseline;
+}
+
 .job-form-required {
   color: #a83f35;
   margin-left: 0.15rem;
