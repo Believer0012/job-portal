@@ -48,33 +48,34 @@ export default function JobForm({
 
   return (
     <form className="job-form" onSubmit={handleSubmit((data) => onSubmit(data))} noValidate>
+      <p className="job-form-legend"><span className="job-form-required" aria-hidden="true">*</span> Required field</p>
       <div className="job-form-grid">
         <label className="job-form-field job-form-field-wide">
-          Job title
-          <input {...register('title')} aria-invalid={Boolean(errors.title)} />
+          Job title<span className="job-form-required" aria-hidden="true">*</span>
+          <input required {...register('title')} aria-invalid={Boolean(errors.title)} aria-required="true" />
           {fieldError('title') && <span className="job-form-error">{fieldError('title')}</span>}
         </label>
         <label className="job-form-field">
-          Company
-          <input {...register('company')} aria-invalid={Boolean(errors.company)} />
+          Company<span className="job-form-required" aria-hidden="true">*</span>
+          <input required {...register('company')} aria-invalid={Boolean(errors.company)} aria-required="true" />
           {fieldError('company') && <span className="job-form-error">{fieldError('company')}</span>}
         </label>
         <label className="job-form-field">
-          Location
-          <input {...register('location')} aria-invalid={Boolean(errors.location)} />
+          Location<span className="job-form-required" aria-hidden="true">*</span>
+          <input required {...register('location')} aria-invalid={Boolean(errors.location)} aria-required="true" />
           {fieldError('location') && <span className="job-form-error">{fieldError('location')}</span>}
         </label>
         <label className="job-form-field">
-          Category
-          <select {...register('categoryId')} aria-invalid={Boolean(errors.categoryId)}>
+          Category<span className="job-form-required" aria-hidden="true">*</span>
+          <select required {...register('categoryId')} aria-invalid={Boolean(errors.categoryId)} aria-required="true">
             <option value="">Select category</option>
             {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
           </select>
           {fieldError('categoryId') && <span className="job-form-error">{fieldError('categoryId')}</span>}
         </label>
         <label className="job-form-field">
-          Experience level
-          <select {...register('experienceLevelId')} aria-invalid={Boolean(errors.experienceLevelId)}>
+          Experience level<span className="job-form-required" aria-hidden="true">*</span>
+          <select required {...register('experienceLevelId')} aria-invalid={Boolean(errors.experienceLevelId)} aria-required="true">
             <option value="">Select experience level</option>
             {experienceLevels.map((level) => <option key={level.id} value={level.id}>{level.name}</option>)}
           </select>
@@ -97,18 +98,18 @@ export default function JobForm({
           {fieldError('salaryMax') && <span className="job-form-error">{fieldError('salaryMax')}</span>}
         </label>
         <label className="job-form-field job-form-field-wide">
-          Description
-          <textarea rows={5} {...register('description')} aria-invalid={Boolean(errors.description)} />
+          Description<span className="job-form-required" aria-hidden="true">*</span>
+          <textarea required rows={5} {...register('description')} aria-invalid={Boolean(errors.description)} aria-required="true" />
           {fieldError('description') && <span className="job-form-error">{fieldError('description')}</span>}
         </label>
         <label className="job-form-field job-form-field-wide">
-          Requirements
-          <textarea rows={4} {...register('requirements')} aria-invalid={Boolean(errors.requirements)} />
+          Requirements<span className="job-form-required" aria-hidden="true">*</span>
+          <textarea required rows={4} {...register('requirements')} aria-invalid={Boolean(errors.requirements)} aria-required="true" />
           {fieldError('requirements') && <span className="job-form-error">{fieldError('requirements')}</span>}
         </label>
         <label className="job-form-field job-form-field-wide">
-          Benefits
-          <textarea rows={4} {...register('benefits')} aria-invalid={Boolean(errors.benefits)} />
+          Benefits<span className="job-form-required" aria-hidden="true">*</span>
+          <textarea required rows={4} {...register('benefits')} aria-invalid={Boolean(errors.benefits)} aria-required="true" />
           {fieldError('benefits') && <span className="job-form-error">{fieldError('benefits')}</span>}
         </label>
         <label className="job-form-field">
